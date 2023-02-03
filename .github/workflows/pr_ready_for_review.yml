@@ -1,0 +1,64 @@
+name: PR ready for review
+
+on:
+  pull_request:
+    # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onevent_nametypes
+    # https://docs.github.com/developers/webhooks-and-events/webhooks/webhook-events-and-payloads?actionType=ready_for_review#pull_request
+    # ready for review means that a pull request was created from a draft
+    types: [ready_for_review]
+    branches:
+      - feature/**
+      - fix/**
+
+# Cancels pending and currently running workflows of the same branch (github.ref)
+# in favor of the latest pull request.
+# See more here:
+# https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#concurrency
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # currently deployed version of Python in App Engine
+        # and latest stable version of Python in App Engine (in case if upgrade requested)
+        python-version: [3.7, 3.10]
+        # matches the python version with the black format version
+        include:
+          - format-version: py37
+            python-version: 3.7
+          - format-version: py310
+            python-version: 3.10
+    env:
+      coverage-threshold: 95
+    steps:
+      - name: git checkout
+        uses: actions/checkout@v3
+
+      - name: Install poetry
+        # pipx comes preinstalled
+        run: pipx install poetry
+
+      - name: setup-python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "poetry"
+
+      - name: Poetry install
+        run: poetry install
+
+      - name: Format with black
+        run: poetry run black \
+          --check src tests \
+          --target-version=${{ matrix.format-version }}
+
+      - name: Test with pytest
+        run: poetry run pytest \
+          --cov=src \
+          --cov-fail-under=${{ env.coverage-threshold }} \
+          --benchmark-group-by=func \
+          -v
