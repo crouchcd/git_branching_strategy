@@ -5,7 +5,7 @@ on:
     # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onevent_nametypes
     # https://docs.github.com/developers/webhooks-and-events/webhooks/webhook-events-and-payloads?actionType=ready_for_review#pull_request
     # ready for review means that a pull request was created from a draft
-    types: [ready_for_review]
+    types: [ready_for_review, synchronize]
     branches:
       - feature/**
       - fix/**
