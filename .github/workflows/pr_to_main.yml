@@ -1,4 +1,4 @@
-name: PR ready for review
+name: PR targeting main
 
 on:
   pull_request:

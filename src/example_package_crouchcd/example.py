@@ -3,4 +3,4 @@ def add_one(number):
 
 
 def add_two(number):
-    return add_one(number) + add_one(number)
+    return add_one(add_one(number))
