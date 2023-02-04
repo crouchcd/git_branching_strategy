@@ -1,4 +1,4 @@
-name: PR ready for review
+name: PR targeting main
 
 on:
   pull_request:
@@ -16,8 +16,7 @@ on:
         synchronize,
       ]
     branches:
-      - feature/**
-      - fix/**
+      - main
 
 # Cancels pending and currently running workflows of the same branch (github.ref)
 # in favor of the latest pull request.
@@ -61,13 +60,15 @@ jobs:
         run: poetry install
 
       - name: Format with black
-        run: poetry run black \
-          --check src tests \
-          --target-version=${{ matrix.format-version }}
+        run: |
+          poetry run black \
+            --check src tests \
+            --target-version=${{ matrix.format-version }}
 
       - name: Test with pytest
-        run: poetry run pytest \
-          --cov=src \
-          --cov-fail-under=${{ env.coverage-threshold }} \
-          --benchmark-group-by=func \
-          -v
+        run: |
+          poetry run pytest \
+            --cov=src \
+            --cov-fail-under=${{ env.coverage-threshold }} \
+            --benchmark-group-by=func \
+            -v

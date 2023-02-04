@@ -16,6 +16,7 @@ jobs:
         # of Python supported by App Engine
         python-version: ["3.7", "3.10"]
     steps:
+      - run: echo ${{ github.event.ref }}
       - name: git checkout
         uses: actions/checkout@v3
 
