@@ -4,7 +4,17 @@ on:
   pull_request:
     # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onevent_nametypes
     # https://docs.github.com/developers/webhooks-and-events/webhooks/webhook-events-and-payloads?actionType=opened#pull_request
-    types: [opened, synchronize]
+    types:
+      [
+        opened,
+        edited,
+        reopened,
+        ready_for_review,
+        unlocked,
+        review_requested,
+        auto_merge_enabled,
+        synchronize,
+      ]
     branches:
       - feature/**
       - fix/**
