@@ -3,6 +3,7 @@ name: Tag pushed to main
 on:
   push:
     tags:
+      - *.*.*
 
 jobs:
   build:
