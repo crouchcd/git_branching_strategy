@@ -3,9 +3,8 @@ name: PR ready for review
 on:
   pull_request:
     # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onevent_nametypes
-    # https://docs.github.com/developers/webhooks-and-events/webhooks/webhook-events-and-payloads?actionType=ready_for_review#pull_request
-    # ready for review means that a pull request was created from a draft
-    types: [ready_for_review, synchronize]
+    # https://docs.github.com/developers/webhooks-and-events/webhooks/webhook-events-and-payloads?actionType=opened#pull_request
+    types: [opened, synchronize]
     branches:
       - feature/**
       - fix/**
@@ -25,13 +24,13 @@ jobs:
       matrix:
         # currently deployed version of Python in App Engine
         # and latest stable version of Python in App Engine (in case if upgrade requested)
-        python-version: [3.7, 3.10]
+        python-version: ["3.7", "3.10"]
         # matches the python version with the black format version
         include:
           - format-version: py37
-            python-version: 3.7
+            python-version: "3.7"
           - format-version: py310
-            python-version: 3.10
+            python-version: "3.10"
     env:
       coverage-threshold: 95
     steps:
