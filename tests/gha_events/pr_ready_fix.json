@@ -1,0 +1,11 @@
+{
+  "pull_request": {
+    "head": {
+      "ref": "refs/heads/fix/f1"
+    },
+    "base": {
+      "ref": "refs/heads/main"
+    }
+  },
+  "action": "ready_for_review"
+}
