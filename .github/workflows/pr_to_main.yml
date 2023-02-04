@@ -16,8 +16,7 @@ on:
         synchronize,
       ]
     branches:
-      - feature/**
-      - fix/**
+      - main
 
 # Cancels pending and currently running workflows of the same branch (github.ref)
 # in favor of the latest pull request.

@@ -7,5 +7,5 @@
       "ref": "refs/heads/main"
     }
   },
-  "action": "ready_for_review"
+  "action": "synchronize"
 }
