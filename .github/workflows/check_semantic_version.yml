@@ -37,4 +37,4 @@ jobs:
         # version would have caused a failure before this step
         run: |
           current_version=$(poetry version -s)
-          [[ $current_version < ${{ inputs.new_version }} ]]
+          [[ $current_version < '${{ inputs.new_version }}' ]]
