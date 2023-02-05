@@ -1,0 +1,12 @@
+{
+  "pull_request": {
+    "head": {
+      "ref": "refs/heads/feature/a"
+    },
+    "base": {
+      "ref": "refs/heads/main"
+    },
+    "merged": true
+  },
+  "action": "closed"
+}
