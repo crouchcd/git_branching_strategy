@@ -1,6 +1,6 @@
 # git_branching_strategy
 
-Testing a CI pipeline using GitHub Actions with feature/fix branches for deploying an example Python package. Including my lessons learned.
+Deploying an example Python package with GitHub Actions and feature/fix branches. Including my lessons learned.
 
 ## Lessons Learned
 
