@@ -3,15 +3,16 @@ name: Continuous Integration
 
 on:
   pull_request:
+    # tried to order these actions based on how they might occur in real life
     types: [
-        auto_merge_enabled,
-        # check if `merged` is true/false when type is `closed`
-        closed,
         opened,
         ready_for_review,
+        synchronize,
+        # check if `merged` is true/false when type is `closed`
+        closed,
         reopened,
         unlocked,
-        synchronize,
+        auto_merge_enabled,
       ]
     branches: [main]
 
