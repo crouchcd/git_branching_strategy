@@ -1,0 +1,117 @@
+# Pull Request targeting main branch
+name: Continuous Integration
+
+on:
+  pull_request:
+    types: [
+        auto_merge_enabled,
+        # check if `merged` is true/false when type is `closed`
+        closed,
+        opened,
+        ready_for_review,
+        reopened,
+        unlocked,
+        synchronize,
+      ]
+    branches: [main]
+
+jobs:
+  test:
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # currently deployed version of Python in App Engine
+        # and latest stable version of Python in App Engine (in case if upgrade requested)
+        python-version: ["3.7", "3.10"]
+        # matches the python version with the black format version
+        include:
+          - format-version: py37
+            python-version: "3.7"
+          - format-version: py310
+            python-version: "3.10"
+    env:
+      coverage-threshold: 95
+    outputs:
+      new_version: ${{ steps.new_version.outputs.new_version }}
+    steps:
+      - name: Checkout source branch
+        uses: actions/checkout@v3
+
+      - name: Install poetry
+        # pipx comes preinstalled
+        run: pipx install poetry
+
+      - name: setup-python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "poetry"
+
+      - name: Install project dependencies
+        run: poetry install
+
+      - name: Format with black
+        run: |
+          poetry run black \
+            --check src tests \
+            --target-version=${{ matrix.format-version }}
+
+      - name: Test with pytest
+        run: |
+          poetry run pytest \
+            --cov=src \
+            --cov-fail-under=${{ env.coverage-threshold }} \
+            --benchmark-group-by=func \
+            -v
+
+      - name: Output new semantic version
+        id: new_version
+        if: matrix.python-version == '3.7'
+        run: echo "new_version=$(poetry version -s)" >> $GITHUB_OUTPUT
+
+  check_semantic_version:
+    # only check that the version has been bumped if the PR came from a feature/fix branch
+    if: contains(github.head_ref, 'feature') || contains(github.head_ref, 'fix')
+    needs: test
+    # will exit if the package version hasn't been updated
+    # and the PR is from a head/fix branch
+    uses: ./.github/workflows/check_semantic_version.yml
+    with:
+      new_version: ${{ needs.test.outputs.new_version }}
+
+  deploy:
+    environment: staging
+    # only deploy if the PR was merged and came from a feature/fix branch
+    if: github.event.pull_request.merged == true && (contains(github.head_ref, 'feature') || contains(github.head_ref, 'fix'))
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # test that building works with target and latest versions
+        # of Python supported by App Engine
+        python-version: ["3.7", "3.10"]
+    steps:
+      - name: Checkout source branch
+        uses: actions/checkout@v3
+
+      - name: Install poetry
+        run: pipx install poetry
+
+      - name: setup-python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "poetry"
+
+      - name: Build package for deployment
+        run: poetry build
+
+      - name: pypi-publish
+        # only publish modules when bundled with version 3.7
+        # since that is the target version of App Engine
+        # probably would work either way though
+        if: matrix.python-version == '3.7'
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          repository_url: https://test.pypi.org/legacy/

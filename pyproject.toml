@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "example-package-crouchcd"
-version = "0.0.1"
+version = "0.1.0"
 description = "A small example package"
 authors = ["Example Author <author@example.com>"]
 readme = "README.md"
