@@ -1,0 +1,40 @@
+# Make sure when a PR is submitted, that the python package version
+# has been bumped
+name: Check semantic version
+
+on:
+  workflow_call:
+    inputs:
+      new_version:
+        description: "The new version of the python package coming from the PR"
+        required: true
+        type: string
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v3
+        # getting the main branch will allow us
+        # to get the currently deployed version
+        with:
+          ref: "refs/heads/main"
+
+      - name: Install poetry
+        # pipx comes preinstalled
+        run: pipx install poetry
+
+      - name: setup-python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.7"
+          cache: "poetry"
+
+      - name: Compare the current and new version
+        # new version should be greater than the current
+        # the versions are coming from poetry, so an invalid
+        # version would have caused a failure before this step
+        run: |
+          current_version=$(poetry version -s)
+          [[ $current_version < ${{ inputs.new_version }} ]]
