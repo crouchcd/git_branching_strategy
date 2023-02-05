@@ -36,5 +36,5 @@ jobs:
         # the versions are coming from poetry, so an invalid
         # version would have caused a failure before this step
         run: |
-          current_version=$(poetry version -s)
-          [[ $current_version < '${{ inputs.new_version }}' ]]
+          echo "current_version=$(poetry version -s)" >> $GITHUB_ENV
+          [[ '${{ env.current_version }}' < '${{ inputs.new_version }}' ]]
