@@ -72,7 +72,7 @@ jobs:
       #   run: echo "new_version=$(poetry version -s)" >> $GITHUB_OUTPUT
 
       - name: PR Checklist
-        uses: ./.github/workflows/py_checklist.yml
+        uses: ./.github/workflows/pr_checklist.yml
         with:
           repo: ${{ github.repository }}
           pr-number: ${{ github.event.pull_request.number }}
