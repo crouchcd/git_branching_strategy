@@ -1,0 +1,31 @@
+name: PR Checklist
+
+on:
+  workflow_call:
+    inputs:
+      pr-number:
+        required: true
+      repo:
+        required: true
+    outputs:
+
+jobs:
+  gather-files:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get list of files changed by this PR
+        shell: bash
+        run: |
+          filenames=$(gh api \
+            -H "Accept: application/vnd.github+json" \
+            --jq '.[] | .filename' \
+            --paginate \
+            /repos/${{ inputs.repo }}/pulls/${{ inputs.pr-number }}/files)
+          echo 'FILES_CHANGED<<EOF' >> $GITHUB_ENV
+          echo $filenames >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+
+  call-pr-checklist:
+    uses: ./.github/actions/pr-checklist
+    with:
+      files-changed: ${{ env.FILES_CHANGED }}
