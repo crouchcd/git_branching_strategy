@@ -27,6 +27,8 @@ jobs:
             --jq '.[] | .filename' \
             --paginate \
             /repos/${{ inputs.repo }}/pulls/${{ inputs.pr-number }}/files | sed 's/\n/__I__/g')
+          echo "::debug::Hello World"
+          echo "::debug::Filenames $filenames"
           echo "FILES_CHANGED=$filenames" >> $GITHUB_ENV
 
       - name: Call PR Checklist
