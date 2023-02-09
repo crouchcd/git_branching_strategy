@@ -1,6 +1,9 @@
 name: "PR Checklist"
 description: "Check the git diff of a PR to see if it contains required files"
-
+inputs:
+  files-changed:
+    required: true
+    type: string
 runs:
   using: "node16"
   main: "dist/index.js"
