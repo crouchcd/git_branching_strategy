@@ -2822,7 +2822,9 @@ const core = __nccwpck_require__(186);
 
 try {
   const filesChanged = core.getInput("files-changed");
-  console.log("FILES:", filesChanged);
+  for (const file of filesChanged.split("__I__")) {
+    console.log("FILE:", file);
+  }
 } catch (error) {
   core.setFailed(error.message);
 }
