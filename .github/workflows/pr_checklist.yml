@@ -32,6 +32,6 @@ jobs:
           echo 'EOF' >> $GITHUB_ENV
 
       - name: Call PR Checklist
-        uses: ./.github/actions/pr-checklist/action.yml
+        uses: ./.github/actions/pr-checklist
         with:
           files-changed: ${{ env.FILES_CHANGED }}
