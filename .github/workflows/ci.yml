@@ -71,11 +71,11 @@ jobs:
       #   if: matrix.python-version == '3.7'
       #   run: echo "new_version=$(poetry version -s)" >> $GITHUB_OUTPUT
 
-      - name: PR Checklist
-        uses: ./.github/workflows/pr_checklist.yml
-        with:
-          repo: ${{ github.repository }}
-          pr-number: ${{ github.event.pull_request.number }}
+  pr_checklist:
+    uses: ./.github/workflows/pr_checklist.yml
+    with:
+      repo: ${{ github.repository }}
+      pr-number: ${{ github.event.pull_request.number }}
 
   # check_semantic_version:
   #   # only check that the version has been bumped if the PR came from a feature/fix branch
