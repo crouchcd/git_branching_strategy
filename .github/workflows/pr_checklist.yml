@@ -10,9 +10,12 @@ on:
     outputs:
 
 jobs:
-  gather-files:
+  main:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout source branch
+        uses: actions/checkout@v3
+
       - name: Get list of files changed by this PR
         shell: bash
         run: |
@@ -25,7 +28,7 @@ jobs:
           echo $filenames >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
 
-  call-pr-checklist:
-    uses: ./.github/actions/pr-checklist/action.yml
-    with:
-      files-changed: ${{ env.FILES_CHANGED }}
+      - name: Call PR Checklist
+        uses: ./.github/actions/pr-checklist/action.yml
+        with:
+          files-changed: ${{ env.FILES_CHANGED }}
