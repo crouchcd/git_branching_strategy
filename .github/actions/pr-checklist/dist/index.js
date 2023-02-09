@@ -2821,13 +2821,16 @@ const core = __nccwpck_require__(186);
 // const github = require("@actions/github");
 
 try {
-  const filesChanged = core.getInput("files-changed");
-  const splitby__I__ = filesChanged.split("__I__");
-  if (splitby__I__.length <= 1) {
-    process.exit(1);
+  const filesChanged = core.getMultilineInput("files-changed");
+  for (const file in filesChanged) {
+    console.log("multiline:", file);
   }
-  for (const file of splitby__I__) {
-    console.log("__file__:", file);
+  const filesChangedSingle = core.getInput("files-changed");
+  for (const file in filesChangedSingle.split("\n")) {
+    console.log("newline:", file);
+  }
+  for (const file in filesChangedSingle.split(" ")) {
+    console.log("space:", file);
   }
 } catch (error) {
   core.setFailed(error.message);
