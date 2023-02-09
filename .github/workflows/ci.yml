@@ -72,10 +72,11 @@ jobs:
       #   run: echo "new_version=$(poetry version -s)" >> $GITHUB_OUTPUT
 
   pr_checklist:
+    if: github.event.action != 'closed'
     uses: ./.github/workflows/pr_checklist.yml
     with:
-      repo: ${{ github.repository }}
       pr-number: ${{ github.event.pull_request.number }}
+      repo: ${{ github.repository }}
 
   # check_semantic_version:
   #   # only check that the version has been bumped if the PR came from a feature/fix branch

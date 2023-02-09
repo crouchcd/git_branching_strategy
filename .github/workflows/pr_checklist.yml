@@ -7,7 +7,6 @@ on:
         required: true
       repo:
         required: true
-    outputs:
 
 jobs:
   main:
