@@ -26,10 +26,8 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             --jq '.[] | .filename' \
             --paginate \
-            /repos/${{ inputs.repo }}/pulls/${{ inputs.pr-number }}/files)
-          echo 'FILES_CHANGED<<EOF' >> $GITHUB_ENV
-          echo $filenames >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV
+            /repos/${{ inputs.repo }}/pulls/${{ inputs.pr-number }}/files | sed 's/\n/__I__/g')
+          echo "FILES_CHANGED=$filenames" >> $GITHUB_ENV
 
       - name: Call PR Checklist
         uses: ./.github/actions/pr-checklist
