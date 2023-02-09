@@ -3,7 +3,7 @@ const core = require("@actions/core");
 
 try {
   const filesChanged = core.getInput("files-changed");
-  console.log("FILES:", filesChanged);
+  console.log("FILES:", filesChanged.split("__I__"));
 } catch (error) {
   core.setFailed(error.message);
 }
