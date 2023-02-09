@@ -27,6 +27,7 @@ jobs:
             --jq '.[] | .filename' \
             --paginate \
             /repos/${{ inputs.repo }}/pulls/${{ inputs.pr-number }}/files)
+          echo "::debug::Filenames are $filenames"
           echo 'FILES_CHANGED<<EOF' >> $GITHUB_ENV
           echo $filenames >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
