@@ -19,6 +19,8 @@ jobs:
 
       - name: Get list of files changed by this PR
         shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           filenames=$(gh api \
             -H "Accept: application/vnd.github+json" \
