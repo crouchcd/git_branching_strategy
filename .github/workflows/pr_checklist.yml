@@ -48,6 +48,9 @@ jobs:
           missing=${{ steps.pr-checklist.outputs.missing }}
           skipped=${{ steps.pr-checklist.outputs.skipped }}
           found=${{ steps.pr-checklist.outputs.found }}
+          echo "::debug::missing: $missing"
+          echo "::debug::skipped: $skipped"
+          echo "::debug::found: $found"
           echo "# PR Checklist" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           while read -r line; do
