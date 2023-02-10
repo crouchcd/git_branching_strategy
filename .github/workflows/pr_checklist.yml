@@ -41,7 +41,7 @@ jobs:
         with:
           files-changed: ${{ env.FILES_CHANGED }}
           files-required: "^pyproject.toml$"
-          files-optional: "^README.md$__I__^docs/.*__I__^CHANGELOG.md$"
+          files-optional: "^README.md$__I__^docs\/.*__I__^CHANGELOG.md$"
 
       - name: Report results
         run: |
