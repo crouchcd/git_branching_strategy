@@ -2860,8 +2860,12 @@ try {
     .getInput("files-optional")
     .split("__I__")
     .map((pattern) => new RegExp(pattern));
-  core.debug(`======== ${JSON.stringify(filesRequired)} ========`);
-  core.debug(`======== ${JSON.stringify(filesOptional)} ========`);
+  core.debug(
+    `======== ${JSON.stringify(filesRequired.map((p) => p.source))} ========`
+  );
+  core.debug(
+    `======== ${JSON.stringify(filesOptional.map((p) => p.source))} ========`
+  );
   const found = [];
   const missing = [];
   const skipped = [];
