@@ -22,16 +22,21 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          filenames=$(gh api \
+          processed=""
+          while read -r line; do
+              processed+="${line}__I__"
+          done < <(gh api \
             -H "Accept: application/vnd.github+json" \
             --jq '.[] | .filename' \
             --paginate \
             /repos/${{ inputs.repo }}/pulls/${{ inputs.pr-number }}/files)
+          echo "::debug::Processed ${processed::-5}"
           echo "FILES_CHANGED<<EOF" >> $GITHUB_ENV
-          echo $filenames >> $GITHUB_ENV
+          echo ${processed::-5} >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
       - name: Call PR Checklist
         uses: ./.github/actions/pr-checklist
         with:
           files-changed: ${{ env.FILES_CHANGED }}
+          files-required:
