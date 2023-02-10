@@ -1,6 +1,6 @@
 const core = require("@actions/core");
 
-const MATCHING_CHARS = /(\^|\.\*|$)/g;
+const MATCHING_CHARS = /(\^|\.\*|\$)/g;
 
 /**
  *
@@ -41,6 +41,8 @@ try {
     .getInput("files-optional")
     .split("__I__")
     .map((pattern) => new RegExp(pattern));
+  core.debug(`======== ${JSON.stringify(filesRequired)} ========`);
+  core.debug(`======== ${JSON.stringify(filesOptional)} ========`);
   const found = [];
   const missing = [];
   const skipped = [];
