@@ -58,19 +58,19 @@ jobs:
               continue
             fi
             echo "- :x: Missing $line" >> $GITHUB_STEP_SUMMARY
-          done < <(echo $missing | sed 's/__I__/\n/g')
+          done < <(echo $missing | sed -E 's/(__I__)/\n/g')
           while read -r line; do
             if [[ -z $line ]]; then
               continue
             fi
             echo "- :eyes: Skipped $line" >> $GITHUB_STEP_SUMMARY
-          done < <(echo $skipped | sed 's/__I__/\n/g')
+          done < <(echo $skipped | sed -E 's/(__I__)/\n/g')
           while read -r line; do
             if [[ -z $line ]]; then
               continue
             fi
             echo "- :white_check_mark: Found $line" >> $GITHUB_STEP_SUMMARY
-          done < <(echo $found | sed 's/__I__/\n/g')
+          done < <(echo $found | sed -E 's/(__I__)/\n/g')
           if [[ -n $missing ]]; then
             echo "::error::Required files were not found."
             exit 1
