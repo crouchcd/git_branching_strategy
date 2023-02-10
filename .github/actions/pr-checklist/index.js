@@ -41,38 +41,18 @@ try {
     .getInput("files-optional")
     .split("__I__")
     .map((pattern) => new RegExp(pattern));
-  const results = [];
+  const found = [];
+  const missing = [];
+  const skipped = [];
   const required = testFiles(filesRequired, filesChanged);
   const optional = testFiles(filesOptional, filesChanged);
-  results.push(
-    ...required.missing.map((pattern) => ({
-      status: "missing",
-      icon: "❌",
-      pattern,
-    }))
-  );
-  results.push(
-    ...optional.missing.map((pattern) => ({
-      status: "skipped",
-      icon: "⏭️",
-      pattern,
-    }))
-  );
-  results.push(
-    ...required.found.map((pattern) => ({
-      status: "found",
-      icon: "✅",
-      pattern,
-    }))
-  );
-  results.push(
-    ...optional.found.map((pattern) => ({
-      status: "found",
-      icon: "✅",
-      pattern,
-    }))
-  );
-  core.setOutput(JSON.stringify(results));
+  missing.push(...required.missing);
+  skipped.push(...optional.missing);
+  found.push(...required.found);
+  found.push(...optional.found);
+  core.setOutput("missing", missing.join("__I__"));
+  core.setOutput("skipped", skipped.join("__I__"));
+  core.setOutput("found", found.join("__I__"));
 } catch (error) {
   core.setFailed(error.message);
 }
