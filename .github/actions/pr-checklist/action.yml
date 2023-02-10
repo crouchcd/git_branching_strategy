@@ -4,6 +4,12 @@ inputs:
   files-changed:
     required: true
     type: string
+  files-required:
+    required: true
+    type: string
+  files-optional:
+    type: string
+    default: ""
 runs:
   using: "node16"
   main: "dist/index.js"

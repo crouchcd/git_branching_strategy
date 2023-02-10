@@ -39,4 +39,5 @@ jobs:
         uses: ./.github/actions/pr-checklist
         with:
           files-changed: ${{ env.FILES_CHANGED }}
-          files-required:
+          files-required: "^pyproject.toml$"
+          files-optional: "^README.md$__I__^docs/.*__I__^CHANGELOG.md$"
