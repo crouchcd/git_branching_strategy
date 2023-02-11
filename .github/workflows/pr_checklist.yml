@@ -62,6 +62,7 @@ jobs:
                 print $i
               }' <<< $filesin))
             for filename in "${arr[@]}"; do
+              echo "::debug::filename is '${filename}'"
               if [[ -z $filename ]]; then
                 continue
               else
