@@ -57,6 +57,9 @@ jobs:
             filesin=$1
             emoji=$2
             phrase=$3
+            if [[ -z $filesin ]]; then
+              exit 0
+            fi
             arr=($(awk -F '__I__' '{
               for (i=0; ++i <= NF;)
                 print $i
@@ -70,9 +73,9 @@ jobs:
               fi
             done
           }
-          __printoutput $missing ':x:' 'Missing'
-          __printoutput $skipped ':eyes:' 'Skipped'
-          __printoutput $found ':white_check_mark:' 'Found'
+          __printoutput "$missing" ':x:' 'Missing'
+          __printoutput "$skipped" ':eyes:' 'Skipped'
+          __printoutput "$found" ':white_check_mark:' 'Found'
           if [[ -n $missing ]]; then
             echo "::error::Missing required files $missing"
           fi
