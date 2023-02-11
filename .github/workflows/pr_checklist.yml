@@ -51,8 +51,8 @@ jobs:
           echo "::debug::missing: $missing"
           echo "::debug::skipped: $skipped"
           echo "::debug::found: $found"
-          echo "# PR Checklist" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "# PR Checklist" > pr_checklist_comment.md
+          echo "" >> pr_checklist_comment.md
           function __printoutput() {
             filesin=$1
             emoji=$2
@@ -65,7 +65,7 @@ jobs:
               if [[ -z $filename ]]; then
                 continue
               fi
-              echo "- $emoji $phrase $filename" >> $GITHUB_STEP_SUMMARY
+              echo "- $emoji $phrase $filename" >> pr_checklist_comment.md
             done
           }
           __printoutput $missing ':x:' 'Missing'
@@ -74,3 +74,8 @@ jobs:
           if [[ -n $missing ]]; then
             echo "::error::Required files were not found."
             exit 1
+
+      - name: Comment results
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          filePath: pr_checklist_comment.md
