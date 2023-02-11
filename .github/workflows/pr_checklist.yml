@@ -58,7 +58,7 @@ jobs:
             emoji=$2
             phrase=$3
             if [[ -z $filesin ]]; then
-              exit 0
+              return 0
             fi
             arr=($(awk -F '__I__' '{
               for (i=0; ++i <= NF;)
