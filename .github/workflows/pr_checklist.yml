@@ -48,9 +48,9 @@ jobs:
           missing=${{ steps.pr-checklist.outputs.missing }}
           skipped=${{ steps.pr-checklist.outputs.skipped }}
           found=${{ steps.pr-checklist.outputs.found }}
-          echo "::debug::missing: $missing"
-          echo "::debug::skipped: $skipped"
-          echo "::debug::found: $found"
+          echo "::debug::missing: '${missing}'"
+          echo "::debug::skipped: '${skipped}'"
+          echo "::debug::found: '${found}'"
           echo "# PR Checklist" > pr_checklist_comment.md
           echo "" >> pr_checklist_comment.md
           function __printoutput() {
