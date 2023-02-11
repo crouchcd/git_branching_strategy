@@ -64,8 +64,9 @@ jobs:
             for filename in "${arr[@]}"; do
               if [[ -z $filename ]]; then
                 continue
+              else
+                echo "- $emoji $phrase $filename" >> pr_checklist_comment.md
               fi
-              echo "- $emoji $phrase $filename" >> pr_checklist_comment.md
             done
           }
           __printoutput $missing ':x:' 'Missing'
@@ -80,4 +81,4 @@ jobs:
         uses: thollander/actions-comment-pull-request@v2
         with:
           filePath: pr_checklist_comment.md
-          mode: recreate
+          comment_tag: pr_checklist
