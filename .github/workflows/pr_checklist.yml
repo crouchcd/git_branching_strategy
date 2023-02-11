@@ -53,24 +53,24 @@ jobs:
           echo "::debug::found: $found"
           echo "# PR Checklist" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          while read -r line; do
-            if [[ -z $line ]]; then
-              continue
-            fi
-            echo "- :x: Missing $line" >> $GITHUB_STEP_SUMMARY
-          done < <(echo $missing | sed -e 's/\(__I__\)/\n/g')
-          while read -r line; do
-            if [[ -z $line ]]; then
-              continue
-            fi
-            echo "- :eyes: Skipped $line" >> $GITHUB_STEP_SUMMARY
-          done < <(echo $skipped | sed -e 's/\(__I__\)/\n/g')
-          while read -r line; do
-            if [[ -z $line ]]; then
-              continue
-            fi
-            echo "- :white_check_mark: Found $line" >> $GITHUB_STEP_SUMMARY
-          done < <(echo $found | sed -e 's/\(__I__\)/\n/g')
+          function __printoutput() {
+            filesin=$1
+            emoji=$2
+            phrase=$3
+            arr=($(awk -F '__I__' '{
+              for (i=0; ++i <= NF;)
+                print $i
+              }' <<< $missing))
+            for filename in "${arr[@]}"; do
+              if [[ -z $filename ]]; then
+                continue
+              fi
+              echo "- $emoji $phrase $filename" >> $GITHUB_STEP_SUMMARY
+            done
+          }
+          __printoutput $missing ':x:' 'Missing'
+          __printoutput $skipped ':eyes:' 'Skipped'
+          __printoutput $found ':white_check_mark:' 'Found'
           if [[ -n $missing ]]; then
             echo "::error::Required files were not found."
             exit 1
