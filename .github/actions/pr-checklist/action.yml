@@ -1,0 +1,22 @@
+name: "PR Checklist"
+description: "Check the git diff of a PR to see if it contains required files"
+inputs:
+  files-changed:
+    required: true
+    type: string
+  files-required:
+    required: true
+    type: string
+  files-optional:
+    type: string
+    default: ""
+outputs:
+  missing:
+    description: "Missing required file names separated by '__I__'"
+  skipped:
+    description: "Missing optional file names separated by '__I__'"
+  found:
+    description: "Found file names separated by '__I__'"
+runs:
+  using: "node16"
+  main: "dist/index.js"
