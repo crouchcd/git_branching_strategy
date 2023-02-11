@@ -13,8 +13,6 @@ on:
 jobs:
   main:
     runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
     steps:
       - name: Checkout source branch
         uses: actions/checkout@v3

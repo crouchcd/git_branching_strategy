@@ -73,6 +73,8 @@ jobs:
 
   pr_checklist:
     if: github.event.action != 'closed'
+    permissions:
+      pull-requests: write
     uses: ./.github/workflows/pr_checklist.yml
     with:
       pr-number: ${{ github.event.pull_request.number }}
