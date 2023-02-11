@@ -66,11 +66,6 @@ jobs:
             --benchmark-group-by=func \
             -v
 
-      # - name: Output new semantic version
-      #   id: new_version
-      #   if: matrix.python-version == '3.7'
-      #   run: echo "new_version=$(poetry version -s)" >> $GITHUB_OUTPUT
-
   pr_checklist:
     if: github.event.action != 'closed'
     permissions:
@@ -79,16 +74,6 @@ jobs:
     with:
       pr-number: ${{ github.event.pull_request.number }}
       repo: ${{ github.repository }}
-
-  # check_semantic_version:
-  #   # only check that the version has been bumped if the PR came from a feature/fix branch
-  #   if: contains(github.head_ref, 'feature') || contains(github.head_ref, 'fix')
-  #   needs: test
-  #   # will exit if the package version hasn't been updated
-  #   # and the PR is from a head/fix branch
-  #   uses: ./.github/workflows/check_semantic_version.yml
-  #   with:
-  #     new_version: ${{ needs.test.outputs.new_version }}
 
   deploy:
     environment: staging
