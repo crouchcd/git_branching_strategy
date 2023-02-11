@@ -60,7 +60,7 @@ jobs:
             arr=($(awk -F '__I__' '{
               for (i=0; ++i <= NF;)
                 print $i
-              }' <<< $missing))
+              }' <<< $filesin))
             for filename in "${arr[@]}"; do
               if [[ -z $filename ]]; then
                 continue
