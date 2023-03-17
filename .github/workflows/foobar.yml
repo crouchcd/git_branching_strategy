@@ -1,0 +1,18 @@
+name: Foobar
+
+on:
+  push:
+    branches-ignore: [main]
+  pull_request:
+    branches: [main]
+    types: [closed]
+
+jobs:
+  echo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: |
+          echo "Full github context: ${GITHUB_CONTEXT}"
