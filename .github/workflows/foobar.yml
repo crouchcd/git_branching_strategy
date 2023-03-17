@@ -5,7 +5,7 @@ on:
     branches: ["*"]
 
 jobs:
-  test:
+  test_3.8:
     runs-on: ubuntu-latest
     steps:
       # - name: Echo
