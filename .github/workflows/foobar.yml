@@ -2,10 +2,7 @@ name: Foobar
 
 on:
   push:
-    branches-ignore: [main]
-  pull_request:
-    branches: [main]
-    types: [closed]
+    branches: ["*"]
 
 jobs:
   echo:
@@ -13,6 +10,6 @@ jobs:
     steps:
       - name: Echo
         env:
-          GITHUB_CONTEXT: ${{ toJSON(github) }}
+          GITHUB_CONTEXT: ${{ toJSON(github.event) }}
         run: |
           echo "Full github context: ${GITHUB_CONTEXT}"
