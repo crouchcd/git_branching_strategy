@@ -2,14 +2,37 @@ name: Foobar
 
 on:
   push:
-    branches: ["*"]
+    branches: [main]
+  pull_request:
+    branches: [main]
+    types: [opened, ready_for_review, synchronize]
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  echo:
+  test-3_8:
     runs-on: ubuntu-latest
     steps:
-      - name: Echo
-        env:
-          GITHUB_CONTEXT: ${{ toJSON(github.event) }}
+      # - name: Echo
+      #   env:
+      #     GITHUB_CONTEXT: ${{ toJSON(github.event) }}
+      #   run: |
+      #     echo "Full github context: ${GITHUB_CONTEXT}"
+      - name: Checkout cidc-schemas repo
+        uses: actions/checkout@v3
+        with:
+          repository: CIMAC-CIDC/cidc-schemas
+      - name: Setup Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.8
+      - name: Install requirements
         run: |
-          echo "Full github context: ${GITHUB_CONTEXT}"
+          pip install -U pip
+          pip install -r requirements.dev.txt
+          pip install pytest-xdist
+      - name: Run pytest
+        run: |
+          pytest --benchmark-skip -n auto
